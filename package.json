@@ -1,0 +1,33 @@
+{
+    "name": "react-modal-manager",
+    "version": "0.0.1",
+    "main": "dist/main.js",
+    "author": "vlzh",
+    "license": "MIT",
+    "scripts": {
+        "start": "webpack",
+        "build": "NODE_ENV=production yarn rollup -c ./rollup.config.js"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.6.2",
+        "@babel/plugin-proposal-class-properties": "^7.5.5",
+        "@babel/preset-react": "^7.0.0",
+        "eslint": "^6.4.0",
+        "eslint-config-prettier": "^6.3.0",
+        "eslint-plugin-prettier": "^3.1.1",
+        "eslint-plugin-react": "^7.14.3",
+        "prettier": "^1.18.2",
+        "rollup": "^1.21.2",
+        "rollup-plugin-babel": "^4.3.3",
+        "rollup-plugin-commonjs": "^10.1.0",
+        "rollup-plugin-node-resolve": "^5.2.0",
+        "rollup-plugin-terser": "^5.1.1",
+        "rollup-plugin-uglify": "^6.0.3"
+    },
+    "dependencies": {
+        "react": "^16.9.0"
+    },
+    "prettier": {
+        "tabWidth": 4
+    }
+}
