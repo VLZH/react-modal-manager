@@ -1,6 +1,7 @@
 {
-    "name": "react-modal-manager",
-    "version": "0.0.1",
+    "name": "@vlzh/react-modal-manager",
+    "private": false,
+    "version": "0.0.2",
     "main": "dist/index.js",
     "author": "vlzh",
     "license": "MIT",
@@ -30,7 +31,7 @@
         "rollup-plugin-terser": "^5.1.1",
         "rollup-plugin-uglify": "^6.0.3"
     },
-    "dependencies": {
+    "peerDependencies": {
         "react": "^16.9.0"
     },
     "prettier": {

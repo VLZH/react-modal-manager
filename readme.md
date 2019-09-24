@@ -1,6 +1,8 @@
 # react-modal-manager
 Manager for modals in your react application
 
+![npm](https://img.shields.io/npm/dm/@vlzh/react-modal-manager) ![GitHub issues](https://img.shields.io/github/issues-raw/vlzh/react-modal-manager) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@vlzh/react-modal-manager)
+
 # Installation
 ```bash
 yarn add @vlzh/react-modal-manager
@@ -64,6 +66,7 @@ ReactDOM.render(<App />, appElement);
 ```
 
 # TODO
+- Add callbacks
 - API documentation
 - Example on codesandbox.io
 - Add tests for manager
