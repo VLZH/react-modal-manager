@@ -2,15 +2,16 @@ const resolve = require("rollup-plugin-node-resolve");
 const babel = require("rollup-plugin-babel");
 const commonjs = require("rollup-plugin-commonjs");
 const { terser } = require("rollup-plugin-terser");
-// const { uglify } = require("rollup-plugin-uglify");
+const pkg = require("./package.json");
 
 const isProduction = process.env.NODE_ENV === "production";
 
 module.exports = {
     input: "src/index.js",
     output: {
-        file: "./dist/index.js",
-        format: "cjs"
+        file: pkg.main,
+        format: "umd",
+        name: pkg.name
     },
     plugins: [
         resolve({
@@ -29,6 +30,8 @@ module.exports = {
         // production plugins
         ...(isProduction ? [terser()] : [])
     ],
-    external: ["react"],
-    inlineDynamicImports: true
+    external: [
+        ...Object.keys(pkg.dependencies || {}),
+        ...Object.keys(pkg.peerDependencies || {})
+    ]
 };

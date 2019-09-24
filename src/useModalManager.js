@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useState } from "react";
 
 /**
  * Attach element to modal in modal manager
@@ -9,17 +9,19 @@ import React from "react";
  * @param {string?} name name of modal
  */
 export const useModalManager = (modalManager, name) => {
-    const [, update] = React.useState(0);
-    if (name) {
-        React.useEffect(() => {
+    const [, update] = useState(0);
+    useEffect(() => {
+        if (name) {
             modalManager.addSubscriber(name, () => {
                 update(Math.random());
             });
-            return () => {
+        }
+        return () => {
+            if (name) {
                 modalManager.removeSubscriber(name);
-            };
-        });
-    }
+            }
+        };
+    });
     return {
         openModal: (...args) => modalManager.openModal(...args),
         closeModal: (...args) => modalManager.closeModal(...args),

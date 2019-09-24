@@ -34,9 +34,6 @@ export class Manager {
     }
 
     isOpen(modal_name) {
-        if (!this.include(modal_name)) {
-            console.error(`manager do not have modal '${modal_name}'`);
-        }
         return this.open.includes(modal_name);
     }
 

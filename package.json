@@ -1,11 +1,11 @@
 {
     "name": "react-modal-manager",
     "version": "0.0.1",
-    "main": "dist/main.js",
+    "main": "dist/index.js",
     "author": "vlzh",
     "license": "MIT",
     "scripts": {
-        "start": "webpack",
+        "start": "yarn rollup -c ./rollup.config.js",
         "build": "NODE_ENV=production yarn rollup -c ./rollup.config.js"
     },
     "devDependencies": {
