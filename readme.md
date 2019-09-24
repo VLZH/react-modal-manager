@@ -66,3 +66,4 @@ ReactDOM.render(<App />, appElement);
 # TODO
 - API documentation
 - Example on codesandbox.io
+- Add tests for manager

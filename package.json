@@ -5,9 +5,15 @@
     "author": "vlzh",
     "license": "MIT",
     "scripts": {
-        "start": "yarn rollup -c ./rollup.config.js",
+        "build:dev": "yarn rollup -c ./rollup.config.js",
         "build": "NODE_ENV=production yarn rollup -c ./rollup.config.js"
     },
+    "keywords": [
+        "react",
+        "modal",
+        "manager",
+        "popup"
+    ],
     "devDependencies": {
         "@babel/core": "^7.6.2",
         "@babel/plugin-proposal-class-properties": "^7.5.5",
