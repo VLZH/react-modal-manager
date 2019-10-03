@@ -1,10 +1,27 @@
+const ALLOWED_EVENTS = ["afterOpen", "beforeOpen", "afterClose", "beforeClose"];
+
+class CallbackParams {
+    constructor(modal_name) {
+        this.modal_name = modal_name;
+    }
+}
+
 export class Manager {
     modals = [];
     open = [];
     subscribers = {};
+    //
+    callbacks = {
+        afterOpen: [],
+        beforeOpen: [],
+        afterClose: [],
+        beforeClose: []
+    };
+    // meta
     scroll_point = 0;
 
     addModal(modal_name) {
+        if (this.include(modal_name)) return;
         this.modals.push(modal_name);
     }
 
@@ -14,23 +31,33 @@ export class Manager {
 
     openModal(modal_name, close_other = true) {
         if (!this.include(modal_name)) {
-            console.error(`manager do not have modal '${modal_name}'`);
+            throw new Error(`manager do not have modal '${modal_name}'`);
         }
+        this.callbacks.beforeOpen.forEach(cb =>
+            cb(new CallbackParams(modal_name))
+        );
         if (close_other) {
             this.open = [];
         }
         this.open.push(modal_name);
         this.callSubscribers(modal_name);
-        this.addBodyClass();
+        this.callbacks.afterOpen.forEach(cb =>
+            cb(new CallbackParams(modal_name))
+        );
     }
 
     closeModal(modal_name) {
         if (!this.include(modal_name)) {
-            console.error(`manager do not have modal '${modal_name}'`);
+            throw new Error(`manager do not have modal '${modal_name}'`);
         }
+        this.callbacks.beforeClose.forEach(cb =>
+            cb(new CallbackParams(modal_name))
+        );
         this.open = this.open.filter(m => m !== modal_name);
         this.callSubscribers(modal_name);
-        this.removeBodyClass();
+        this.callbacks.afterClose.forEach(cb =>
+            cb(new CallbackParams(modal_name))
+        );
     }
 
     isOpen(modal_name) {
@@ -47,7 +74,6 @@ export class Manager {
 
     removeSubscriber(name) {
         delete this.subscribers[name];
-        // this.subscribers = this.subscribers.filter(s => s !== subscriber);
     }
 
     callSubscribers(name) {
@@ -60,26 +86,10 @@ export class Manager {
         }
     }
 
-    addBodyClass() {
-        if (this.scroll_point) {
-            return;
+    on(event, cb) {
+        if (!ALLOWED_EVENTS.includes(event)) {
+            throw new Error(`Unknown event ${event}`);
         }
-        this.scroll_point = window.scrollY;
-        document.querySelector(
-            "#global_content"
-        ).style.top = `-${this.scroll_point}px`;
-        document.querySelector("body").classList.add("open_modal");
-        window.scrollTo(0, 0);
-    }
-
-    removeBodyClass() {
-        // setTimeout(() => {
-        if (this.scroll_point === null) {
-            return;
-        }
-        document.querySelector("#global_content").style.top = "0px";
-        document.querySelector("body").classList.remove("open_modal");
-        window.scrollTo(0, this.scroll_point);
-        this.scroll_point = null;
+        this.callbacks[event].push(cb);
     }
 }

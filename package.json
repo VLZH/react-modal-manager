@@ -1,40 +1,45 @@
 {
-    "name": "@vlzh/react-modal-manager",
-    "private": false,
-    "version": "0.0.3",
-    "main": "dist/index.js",
-    "author": "vlzh",
-    "license": "MIT",
-    "scripts": {
-        "build:dev": "yarn rollup -c ./rollup.config.js",
-        "build": "NODE_ENV=production yarn rollup -c ./rollup.config.js"
-    },
-    "keywords": [
-        "react",
-        "modal",
-        "manager",
-        "popup"
-    ],
-    "devDependencies": {
-        "@babel/core": "^7.6.2",
-        "@babel/plugin-proposal-class-properties": "^7.5.5",
-        "@babel/preset-react": "^7.0.0",
-        "eslint": "^6.4.0",
-        "eslint-config-prettier": "^6.3.0",
-        "eslint-plugin-prettier": "^3.1.1",
-        "eslint-plugin-react": "^7.14.3",
-        "prettier": "^1.18.2",
-        "rollup": "^1.21.2",
-        "rollup-plugin-babel": "^4.3.3",
-        "rollup-plugin-commonjs": "^10.1.0",
-        "rollup-plugin-node-resolve": "^5.2.0",
-        "rollup-plugin-terser": "^5.1.1",
-        "rollup-plugin-uglify": "^6.0.3"
-    },
-    "peerDependencies": {
-        "react": "^16.9.0"
-    },
-    "prettier": {
-        "tabWidth": 4
-    }
+  "name": "@vlzh/react-modal-manager",
+  "private": false,
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "author": "vlzh",
+  "license": "MIT",
+  "scripts": {
+    "build:dev": "yarn rollup -c ./rollup.config.js",
+    "build": "NODE_ENV=production yarn rollup -c ./rollup.config.js",
+    "test": "jest"
+  },
+  "keywords": [
+    "react",
+    "modal",
+    "manager",
+    "popup"
+  ],
+  "devDependencies": {
+    "@babel/core": "^7.6.2",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/preset-env": "^7.6.2",
+    "@babel/preset-react": "^7.0.0",
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.4.0",
+    "eslint-config-prettier": "^6.3.0",
+    "eslint-plugin-jest": "^22.17.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-react": "^7.14.3",
+    "jest": "^24.9.0",
+    "prettier": "^1.18.2",
+    "rollup": "^1.21.2",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-terser": "^5.1.1",
+    "rollup-plugin-uglify": "^6.0.3"
+  },
+  "peerDependencies": {
+    "react": "^16.9.0"
+  },
+  "prettier": {
+    "tabWidth": 4
+  }
 }
