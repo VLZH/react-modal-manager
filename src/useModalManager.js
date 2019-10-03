@@ -12,6 +12,7 @@ export const useModalManager = (modalManager, name) => {
     const [, update] = useState(0);
     useEffect(() => {
         if (name) {
+            modalManager.addModal(name);
             modalManager.addSubscriber(name, () => {
                 update(Math.random());
             });

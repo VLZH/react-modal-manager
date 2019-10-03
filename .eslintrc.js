@@ -7,9 +7,10 @@ module.exports = {
     extends: [
         "eslint:recommended",
         "plugin:react/recommended",
-        "plugin:jest/recommended"
+        "plugin:jest/recommended",
+        "plugin:prettier/recommended"
     ],
-    plugins: ["react", "jest"],
+    plugins: ["react", "jest", "prettier"],
     parser: "babel-eslint",
     parserOptions: {
         ecmaFeatures: {
