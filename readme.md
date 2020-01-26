@@ -17,9 +17,30 @@ npm add @vlzh/react-modal-manager
 ```
 
 # API
+You can to manipulate with manager through 2 api:
+- `useModalManager(name: string)`
+- `withModalManager(name: string)`
 
--   useModalManager
--   withModalManager
+⚠️You can to call `useModalManager` and `withModalManager` with providing `name` of modal... but there is one point! When you will provide `name` you just subscribe current component to `modalManager` without binding methods to specific modal.
+
+they provide several methods:
+- `closeModal(name: string): void` - close modal with specific name 
+- `openModal(name: string): void` - open modal with specific name
+- `isOpen(name: string): boolean` - get opening status for modal with specific name
+
+# Events
+In example bellow you can to see, how to subscribe on even. Supported events:
+- `beforeOpen`
+- `afterOpen`
+- `beforeClose`
+- `afterClose`
+
+Any provided callback function will call with object like:
+```
+{
+    modal_name: string
+}
+```
 
 # Example
 
@@ -31,6 +52,7 @@ import ReactDOM from "react-dom";
 import Modal from "react-modal";
 import { useModalManager, manager } from "@vlzh/react-modal-manager";
 
+// subscribe on event 'afterOpen'
 manager.on("afterOpen", ({ modal_name }) => {
     console.log(`Modal ${modal_name} opened`);
 });
