@@ -1,7 +1,8 @@
+import {Event} from "../src/interfaces";
 import { Manager } from "../src/Manager";
 
 describe("manager methods", () => {
-    let manager = new Manager();
+    const manager = new Manager();
 
     it("adding/deleting modals", () => {
         manager.addModal("a");
@@ -49,13 +50,13 @@ describe("manager methods", () => {
 });
 
 describe("registration of callbacks", () => {
-    let manager = new Manager();
+    const manager = new Manager();
     manager.addModal("a");
 
-    const beforeOpen1 = jest.fn(() => {});
-    const afterOpen1 = jest.fn(() => {});
-    const beforeClose1 = jest.fn(() => {});
-    const afterClose1 = jest.fn(() => {});
+    const beforeOpen1 = jest.fn(() => undefined);
+    const afterOpen1 = jest.fn(() => undefined);
+    const beforeClose1 = jest.fn(() => undefined);
+    const afterClose1 = jest.fn(() => undefined);
 
     manager.on("beforeOpen", beforeOpen1);
     manager.on("afterOpen", afterOpen1);
@@ -63,7 +64,7 @@ describe("registration of callbacks", () => {
     manager.on("afterClose", afterClose1);
 
     it("error on undefined event", () => {
-        expect(() => manager.on("undefined", () => {})).toThrow();
+        expect(() => manager.on(("undefined" as Event), () => undefined)).toThrow();
     });
 
     it("manager must call callbacks on open", () => {

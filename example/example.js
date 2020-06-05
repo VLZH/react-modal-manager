@@ -1,7 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Modal from "react-modal";
-import { manager, useModalManager, withModalManager } from "../src";
+import { manager, useModalManager, withModalManager } from "../dist";
+//import { manager, useModalManager, withModalManager } from "../src";
 
 manager.on("beforeOpen", ({ modal_name }) => {
     console.log(modal_name);
@@ -27,7 +28,7 @@ const OpenModalButtonWithHoc = withModalManager()(({ openModal }) => {
     );
 });
 
-const App = props => {
+const App = (props) => {
     const { isOpen, closeModal } = useModalManager("example_modal");
     return (
         <div>

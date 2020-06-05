@@ -2,13 +2,15 @@ import { Manager } from "./Manager";
 import { useModalManager as _useModalManager } from "./useModalManager";
 import { withModalManager as _withModalManager } from "./withModalManager";
 
-const manager = new Manager();
+export const manager = new Manager();
 
 /**
  * Create new hook with predefined manager
  * @param {string?} name the same as in original useModalManager
  */
-const useModalManager = name => {
+export const useModalManager = (
+    name: string
+): ReturnType<typeof _useModalManager> => {
     return _useModalManager(manager, name);
 };
 
@@ -16,6 +18,6 @@ const useModalManager = name => {
  * Create new HOC with predefined manager
  * @param {string?} name the same as in original withModalManager
  */
-const withModalManager = name => _withModalManager(manager, name);
-
-export { manager, useModalManager, withModalManager };
+export const withModalManager = (
+    name: string
+): ReturnType<typeof _withModalManager> => _withModalManager(manager, name);

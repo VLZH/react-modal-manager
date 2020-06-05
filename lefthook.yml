@@ -1,0 +1,7 @@
+pre-commit:
+  parallel: true
+  commands:
+    linter:
+      run: yarn lint
+    tests:
+      run: yarn test

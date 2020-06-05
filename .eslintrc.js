@@ -2,31 +2,32 @@ module.exports = {
     env: {
         browser: true,
         es6: true,
-        node: true
+        node: true,
     },
     extends: [
         "eslint:recommended",
         "plugin:react/recommended",
         "plugin:jest/recommended",
-        "plugin:prettier/recommended"
+        "prettier/@typescript-eslint",
+        "plugin:@typescript-eslint/recommended",
     ],
-    plugins: ["react", "jest", "prettier"],
-    parser: "babel-eslint",
+    plugins: ["react", "jest", "prettier", "@typescript-eslint"],
+    parser: "@typescript-eslint/parser",
     parserOptions: {
         ecmaFeatures: {
-            jsx: true
+            jsx: true,
         },
         ecmaVersion: 2018,
-        sourceType: "module"
+        sourceType: "module",
     },
     rules: {
         indent: ["error", 4],
         "linebreak-style": ["error", "unix"],
         quotes: ["error", "double"],
-        semi: ["error", "always"]
+        semi: ["error", "always"],
     },
     globals: {
         Atomics: "readonly",
-        SharedArrayBuffer: "readonly"
-    }
+        SharedArrayBuffer: "readonly",
+    },
 };
