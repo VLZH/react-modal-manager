@@ -1,5 +1,6 @@
 .DS_Store
 .cache
+*.log
 
 node_modules
 dist
