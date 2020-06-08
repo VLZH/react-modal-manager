@@ -9,7 +9,7 @@ export const manager = new Manager();
  * @param {string?} name the same as in original useModalManager
  */
 export const useModalManager = (
-    name: string
+    name?: string
 ): ReturnType<typeof _useModalManager> => {
     return _useModalManager(manager, name);
 };
@@ -19,5 +19,5 @@ export const useModalManager = (
  * @param {string?} name the same as in original withModalManager
  */
 export const withModalManager = (
-    name: string
+    name?: string
 ): ReturnType<typeof _withModalManager> => _withModalManager(manager, name);

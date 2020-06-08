@@ -17,25 +17,31 @@ npm add @vlzh/react-modal-manager
 ```
 
 # API
-You can to manipulate with manager through 2 api:
-- `useModalManager(name: string)`
-- `withModalManager(name: string)`
 
-⚠️You can to call `useModalManager` and `withModalManager` with providing `name` of modal... but there is one point! When you will provide `name` you just subscribe current component to `modalManager` without binding methods to specific modal.
+You can to manipulate with manager through 2 api:
+
+-   `useModalManager(name: string)`
+-   `withModalManager(name: string)`
+
+⚠️You can to call `useModalManager` and `withModalManager` with providing `name` of modal... but there is one point! When you will provide `name` you just subscribe current component to `modalManager` + methods returned from `useModalManager` will be associated with specific modal.
 
 they provide several methods:
-- `closeModal(name: string): void` - close modal with specific name 
-- `openModal(name: string): void` - open modal with specific name
-- `isOpen(name: string): boolean` - get opening status for modal with specific name
+
+-   `closeModal(name: string): void` - close modal with specific name
+-   `openModal(name: string): void` - open modal with specific name
+-   `isOpen(name: string): boolean` - get opening status for modal with specific name
 
 # Events
-In example bellow you can to see, how to subscribe on even. Supported events:
-- `beforeOpen`
-- `afterOpen`
-- `beforeClose`
-- `afterClose`
+
+In example bellow you can to see, how to subscribe on event. Supported events:
+
+-   `beforeOpen`
+-   `afterOpen`
+-   `beforeClose`
+-   `afterClose`
 
 Any provided callback function will call with object like:
+
 ```
 {
     modal_name: string
@@ -60,7 +66,7 @@ manager.on("afterOpen", ({ modal_name }) => {
 Modal.setAppElement("#root");
 
 const OpenModalButton = () => {
-    // if we do not define name in useModalManager this button will not be subscribed on changes in manager
+    // if we do not define name in useModalManager this button will not be subscribed on changes in manager, but you must to define modal_name on calling of openModal
     const { openModal } = useModalManager();
     return (
         <button type="button" onClick={() => openModal("example_modal")}>
@@ -69,7 +75,7 @@ const OpenModalButton = () => {
     );
 };
 
-const App = props => {
+const App = (props) => {
     const { isOpen, closeModal } = useModalManager("example_modal");
     return (
         <div>
@@ -102,4 +108,3 @@ ReactDOM.render(<App />, document.getElementById("root"));
 # TODO
 
 -   API documentation
--   Add tests for manager

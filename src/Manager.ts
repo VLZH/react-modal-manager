@@ -1,4 +1,10 @@
-import { ModalsList, Event, Callbacks, Subscribers, CallbackFunction } from "./interfaces";
+import {
+    ModalsList,
+    Event,
+    Callbacks,
+    Subscribers,
+    CallbackFunction,
+} from "./interfaces";
 import { CallbackParams } from "./CallbackParams";
 
 const ALLOWED_EVENTS: Event[] = [
@@ -7,7 +13,6 @@ const ALLOWED_EVENTS: Event[] = [
     "afterClose",
     "beforeClose",
 ];
-
 
 export class Manager {
     modals: ModalsList = [];
@@ -29,6 +34,7 @@ export class Manager {
     addModal(modal_name: string): void {
         if (this.include(modal_name)) return;
         this.modals.push(modal_name);
+        this.subscribers[modal_name] = [];
     }
 
     /**
@@ -36,6 +42,7 @@ export class Manager {
      */
     delModal(modal_name: string): void {
         this.modals = this.modals.filter((m) => m !== modal_name);
+        delete this.subscribers[modal_name];
     }
 
     /**
@@ -49,7 +56,9 @@ export class Manager {
             cb(new CallbackParams(modal_name))
         );
         if (close_other) {
-            this.open = [];
+            for (const opened_modal of this.open) {
+                this.closeModal(opened_modal);
+            }
         }
         this.open.push(modal_name);
         this.callSubscribers(modal_name);
@@ -92,27 +101,33 @@ export class Manager {
     /**
      * Register function for modal, that will call on change of this modal
      */
-    addSubscriber(name: string, subscriber: () => unknown): void {
-        this.subscribers[name] = subscriber;
+    addSubscriber(modal_name: string, subscriber: () => unknown): void {
+        this.subscribers[modal_name].push(subscriber);
     }
 
     /**
      * Remove subscriber for specific modal
+     * Note: if all subscribers for modal_name are deleted, modal will be deleted
      */
-    removeSubscriber(name: string): void {
-        delete this.subscribers[name];
+    removeSubscriber(modal_name: string, subscriber: () => unknown): void {
+        this.subscribers[modal_name] = this.subscribers[modal_name].filter(
+            (s) => s !== subscriber
+        );
+        // Delete modal if it do not have subscribers
+        if (this.subscribers[modal_name].length === 0) {
+            this.delModal(modal_name);
+        }
     }
 
     /**
      * Call all registred subscribers for specific modal
      */
-    private callSubscribers(name: string) {
-        for (const k in this.subscribers) {
-            if (!name) {
-                this.subscribers[k]();
-            } else if (name === k) {
-                this.subscribers[k]();
-            }
+    private callSubscribers(modal_name: string) {
+        if (!Object.keys(this.subscribers).includes(modal_name)) {
+            throw new Error(`Subscribers for '${modal_name} not defined'`);
+        }
+        for (const subscriber of this.subscribers[modal_name]) {
+            subscriber();
         }
     }
 

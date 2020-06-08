@@ -1,8 +1,11 @@
-import {Event} from "../src/interfaces";
+import { Event } from "../src/interfaces";
 import { Manager } from "../src/Manager";
 
 describe("manager methods", () => {
     const manager = new Manager();
+    const subscriber_a_1 = jest.fn(() => undefined);
+    const subscriber_a_2 = jest.fn(() => undefined);
+    const subscriber_b_1 = jest.fn(() => undefined);
 
     it("adding/deleting modals", () => {
         manager.addModal("a");
@@ -47,6 +50,43 @@ describe("manager methods", () => {
     it("close undefined modal", () => {
         expect(() => manager.closeModal("f")).toThrow();
     });
+
+    it("check subscribers list", () => {
+        expect(manager.subscribers["a"]).toEqual([]);
+    });
+
+    it("add subscriber for modal 'a'", () => {
+        manager.addSubscriber("a", subscriber_a_1);
+        manager.addSubscriber("a", subscriber_a_2);
+        expect(manager.subscribers["a"]).toHaveLength(2);
+    });
+
+    it("add subscriber for modal 'b'", () => {
+        manager.addSubscriber("b", subscriber_b_1);
+        expect(manager.subscribers["b"]).toHaveLength(1);
+    });
+
+    it("subscriber will call on open modal", () => {
+        manager.openModal("a");
+        expect(subscriber_a_1.mock.calls.length).toBe(1);
+        expect(subscriber_a_2.mock.calls.length).toBe(1);
+    });
+
+    it("subscribers will call on open other modal with cloasing another modals", () => {
+        manager.openModal("b", true);
+        expect(subscriber_a_1.mock.calls.length).toBe(2);
+        expect(subscriber_a_2.mock.calls.length).toBe(2);
+    });
+
+    it("subscriber deleting", () => {
+        manager.removeSubscriber("a", subscriber_a_2);
+        expect(manager.subscribers["a"]).toEqual([subscriber_a_1]);
+    });
+
+    it("deleting of modal on delete all it's subscribers", () => {
+        manager.removeSubscriber("a", subscriber_a_1);
+        expect(manager.modals).not.toContain("a");
+    });
 });
 
 describe("registration of callbacks", () => {
@@ -64,7 +104,9 @@ describe("registration of callbacks", () => {
     manager.on("afterClose", afterClose1);
 
     it("error on undefined event", () => {
-        expect(() => manager.on(("undefined" as Event), () => undefined)).toThrow();
+        expect(() =>
+            manager.on("undefined" as Event, () => undefined)
+        ).toThrow();
     });
 
     it("manager must call callbacks on open", () => {

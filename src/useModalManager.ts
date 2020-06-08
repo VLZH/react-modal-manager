@@ -12,28 +12,34 @@ import { HookReturns } from "./interfaces";
  */
 export const useModalManager = (
     modalManager: Manager,
-    modal_name: string
+    modal_name?: string
 ): HookReturns => {
+    const _modal_name = modal_name;
     const [, update] = useState(0);
     useEffect(() => {
+        const subscriber_cb = () => {
+            update(Math.random());
+        };
         if (modal_name) {
             modalManager.addModal(modal_name);
-            modalManager.addSubscriber(modal_name, () => {
-                update(Math.random());
-            });
+            modalManager.addSubscriber(modal_name, subscriber_cb);
         }
         return () => {
             if (modal_name) {
-                modalManager.removeSubscriber(modal_name);
+                modalManager.removeSubscriber(modal_name, subscriber_cb);
             }
         };
-    });
+    }, [modal_name]);
     return {
-        openModal: (...args: Parameters<Manager["openModal"]>) =>
-            modalManager.openModal(...args),
-        closeModal: (...args: Parameters<Manager["closeModal"]>) =>
-            modalManager.closeModal(...args),
-        isOpen: (...args: Parameters<Manager["isOpen"]>) =>
-            modalManager.isOpen(...args),
+        openModal: (
+            modal_name: string = _modal_name,
+            close_other?: boolean
+        ) => {
+            modalManager.openModal(modal_name, close_other);
+        },
+        closeModal: (modal_name: string = _modal_name) =>
+            modalManager.closeModal(modal_name),
+        isOpen: (modal_name: string = _modal_name) =>
+            modalManager.isOpen(modal_name),
     };
 };
