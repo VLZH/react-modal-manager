@@ -58,7 +58,7 @@ export class Manager {
      * Get registred modal
      * @param modal_name {string} name of modal
      */
-    getModalByName(modal_name: string): Modal {
+    getModalByName(modal_name: string): Modal | undefined {
         return this.modals.find((m) => m.name === modal_name);
     }
 

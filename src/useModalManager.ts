@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
+import { ModalParams } from "./interfaces";
 import { Manager } from "./Manager";
-import { HookReturns } from "./interfaces";
+
+const createUndefinedModalError = (method_name: string) =>
+    new Error(
+        `You must provide modal name in 'useModalManage' otherwise in method '${method_name}'`
+    );
 
 /**
  * Attach element to modal in modal manager
@@ -10,10 +15,7 @@ import { HookReturns } from "./interfaces";
  * @param {Manager} modalManager
  * @param {string?} modal_name name of modal
  */
-export const useModalManager = (
-    modalManager: Manager,
-    modal_name?: string
-): HookReturns => {
+export const useModalManager = (modalManager: Manager, modal_name?: string) => {
     const _modal_name = modal_name;
     const [, update] = useState(0);
     useEffect(() => {
@@ -32,16 +34,24 @@ export const useModalManager = (
     }, [modal_name]);
     return {
         openModal: (
-            modal_name: string = _modal_name,
-            close_other?: boolean
+            modal_name: string | undefined = _modal_name,
+            close_other?: boolean,
+            params?: ModalParams
         ) => {
-            modalManager.openModal(modal_name, close_other);
+            if (!modal_name) throw createUndefinedModalError("openModal");
+            return modalManager.openModal(modal_name, close_other, params);
         },
-        closeModal: (modal_name: string = _modal_name) =>
-            modalManager.closeModal(modal_name),
-        isOpen: (modal_name: string = _modal_name) =>
-            modalManager.isOpen(modal_name),
-        getParams: (modal_name: string = _modal_name) =>
-            modalManager.getParams(modal_name),
+        closeModal: (modal_name: string | undefined = _modal_name) => {
+            if (!modal_name) throw createUndefinedModalError("closeModal");
+            return modalManager.closeModal(modal_name);
+        },
+        isOpen: (modal_name: string | undefined = _modal_name) => {
+            if (!modal_name) throw createUndefinedModalError("isOpen");
+            return modalManager.isOpen(modal_name);
+        },
+        getParams: (modal_name: string | undefined = _modal_name) => {
+            if (!modal_name) throw createUndefinedModalError("getParams");
+            return modalManager.getParams(modal_name);
+        },
     };
 };

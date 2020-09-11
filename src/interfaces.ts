@@ -30,9 +30,3 @@ export type Subscribers = {
     [key: string]: (() => void)[];
 };
 
-export interface HookReturns {
-    openModal: (modal_name?: string, close_other?: boolean) => void;
-    closeModal: (modal_name?: string) => void;
-    isOpen: (modal_name?: string) => boolean;
-    getParams: (modal_name?: string) => ModalParams | null;
-}

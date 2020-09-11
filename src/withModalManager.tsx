@@ -7,7 +7,10 @@ import { Manager } from "./Manager";
  * @param {Manager} modalManager
  * @param {string?} name
  */
-export const withModalManager = (modalManager: Manager, name: string): any => (
+export const withModalManager = (
+    modalManager: Manager,
+    name: string | undefined
+): any => (
     ComposedComponent: React.FunctionComponent | React.ClassicComponentClass
 ) => {
     const WithModalManagerWrapper: React.FunctionComponent<any> = (
