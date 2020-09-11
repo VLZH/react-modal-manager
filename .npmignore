@@ -3,3 +3,7 @@ example
 tests
 .git
 .cache
+.github
+.prettierrc.js
+.eslintrc.js
+.babelrc.json
