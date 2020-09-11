@@ -23,13 +23,17 @@ You can to manipulate with manager through 2 api:
 -   `useModalManager(name: string)`
 -   `withModalManager(name: string)`
 
-⚠️You can to call `useModalManager` and `withModalManager` with providing `name` of modal... but there is one point! When you will provide `name` you just subscribe current component to `modalManager` + methods returned from `useModalManager` will be associated with specific modal.
+> #### ⚠️ Info
+>
+> You can to call `useModalManager` and `withModalManager` with providing `name` of modal... but there is one point!
+> When you will provide `name` you just subscribe current component to `modalManager` + methods returned from `useModalManager` will be associated with specific modal.
 
 they provide several methods:
 
 -   `closeModal(name: string): void` - close modal with specific name
 -   `openModal(name: string): void` - open modal with specific name
 -   `isOpen(name: string): boolean` - get opening status for modal with specific name
+-   `getParams(name: string): boolean` - get opening status for modal with specific name
 
 # Events
 
@@ -105,6 +109,6 @@ const App = (props) => {
 ReactDOM.render(<App />, document.getElementById("root"));
 ```
 
-# TODO
+# Changelog
 
--   API documentation
+-   `2.0.0` - Support of parameters

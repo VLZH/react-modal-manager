@@ -11,14 +11,45 @@ describe("manager methods", () => {
         manager.addModal("a");
         manager.addModal("b");
         manager.addModal("c");
-        expect(manager.modals).toEqual(["a", "b", "c"]);
+        expect(manager.modals).toEqual([
+            {
+                name: "a",
+                default_params: {},
+            },
+            {
+                name: "b",
+                default_params: {},
+            },
+            {
+                name: "c",
+                default_params: {},
+            },
+        ]);
         manager.delModal("c");
-        expect(manager.modals).toEqual(["a", "b"]);
+        expect(manager.modals).toEqual([
+            {
+                name: "a",
+                default_params: {},
+            },
+            {
+                name: "b",
+                default_params: {},
+            },
+        ]);
     });
 
     it("adding already exist modal", () => {
         manager.addModal("a");
-        expect(manager.modals).toEqual(["a", "b"]);
+        expect(manager.modals).toEqual([
+            {
+                name: "a",
+                default_params: {},
+            },
+            {
+                name: "b",
+                default_params: {},
+            },
+        ]);
     });
 
     it("open modal", () => {
@@ -120,5 +151,34 @@ describe("registration of callbacks", () => {
         manager.closeModal("a");
         expect(beforeClose1.mock.calls.length).toBe(1);
         expect(afterClose1.mock.calls.length).toBe(1);
+    });
+});
+
+describe("params for modals", () => {
+    const manager = new Manager();
+    manager.addModal("a");
+
+    it("check passed params", () => {
+        manager.openModal("a", undefined, {
+            product_id: 10,
+        });
+        expect(manager.getParams("a")).toEqual({
+            product_id: 10,
+        });
+    });
+
+    it("check default params", () => {
+        manager.addModal("b", {
+            is_default: true,
+        });
+        manager.openModal("b");
+        expect(manager.getParams("b")).toEqual({
+            is_default: true,
+        });
+    });
+
+    it("check closed modal", () => {
+        manager.closeModal("b");
+        expect(manager.getParams("b")).toBe(null);
     });
 });

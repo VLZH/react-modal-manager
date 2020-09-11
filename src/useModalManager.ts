@@ -41,5 +41,7 @@ export const useModalManager = (
             modalManager.closeModal(modal_name),
         isOpen: (modal_name: string = _modal_name) =>
             modalManager.isOpen(modal_name),
+        getParams: (modal_name: string = _modal_name) =>
+            modalManager.getParams(modal_name),
     };
 };

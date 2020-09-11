@@ -1,9 +1,13 @@
 import {
     ModalsList,
+    Modal,
+    ModalParams,
+    OpenModalsList,
     Event,
     Callbacks,
     Subscribers,
     CallbackFunction,
+    OpenModal,
 } from "./interfaces";
 import { CallbackParams } from "./CallbackParams";
 
@@ -16,7 +20,7 @@ const ALLOWED_EVENTS: Event[] = [
 
 export class Manager {
     modals: ModalsList = [];
-    open: ModalsList = [];
+    open: OpenModalsList = [];
     subscribers: Subscribers = {};
     //
     callbacks: Callbacks = {
@@ -31,9 +35,13 @@ export class Manager {
     /**
      * Register new modal
      */
-    addModal(modal_name: string): void {
-        if (this.include(modal_name)) return;
-        this.modals.push(modal_name);
+    addModal(modal_name: string, default_params: ModalParams = {}): void {
+        const modal = this.getModalByName(modal_name);
+        if (modal) return;
+        this.modals.push({
+            name: modal_name,
+            default_params: default_params,
+        });
         this.subscribers[modal_name] = [];
     }
 
@@ -41,15 +49,29 @@ export class Manager {
      * Remove modal with specific name
      */
     delModal(modal_name: string): void {
-        this.modals = this.modals.filter((m) => m !== modal_name);
+        this.modals = this.modals.filter((m) => m.name !== modal_name);
+        this.open = this.open.filter((m) => m.name !== modal_name);
         delete this.subscribers[modal_name];
+    }
+
+    /**
+     * Get registred modal
+     * @param modal_name {string} name of modal
+     */
+    getModalByName(modal_name: string): Modal {
+        return this.modals.find((m) => m.name === modal_name);
     }
 
     /**
      * Open modal with specific name and close another modals if <close_other> is true
      */
-    openModal(modal_name: string, close_other = true): void {
-        if (!this.include(modal_name)) {
+    openModal(
+        modal_name: string,
+        close_other = true,
+        params?: ModalParams
+    ): void {
+        const modal = this.getModalByName(modal_name);
+        if (!modal) {
             throw new Error(`manager do not have modal '${modal_name}'`);
         }
         this.callbacks.beforeOpen.forEach((cb) =>
@@ -57,10 +79,13 @@ export class Manager {
         );
         if (close_other) {
             for (const opened_modal of this.open) {
-                this.closeModal(opened_modal);
+                this.closeModal(opened_modal.name);
             }
         }
-        this.open.push(modal_name);
+        this.open.push({
+            name: modal.name,
+            params: params || modal.default_params,
+        });
         this.callSubscribers(modal_name);
         this.callbacks.afterOpen.forEach((cb) =>
             cb(new CallbackParams(modal_name))
@@ -71,13 +96,16 @@ export class Manager {
      * Close the modal with specific name
      */
     closeModal(modal_name: string): void {
-        if (!this.include(modal_name)) {
-            throw new Error(`manager do not have modal '${modal_name}'`);
+        const modal = this.getModalByName(modal_name);
+        if (!modal) {
+            throw new Error(
+                `manager do not have modal with name '${modal_name}'`
+            );
         }
         this.callbacks.beforeClose.forEach((cb) =>
             cb(new CallbackParams(modal_name))
         );
-        this.open = this.open.filter((m) => m !== modal_name);
+        this.open = this.open.filter((m) => m.name !== modal_name);
         this.callSubscribers(modal_name);
         this.callbacks.afterClose.forEach((cb) =>
             cb(new CallbackParams(modal_name))
@@ -88,14 +116,22 @@ export class Manager {
      * Define modal with name <modal_name> is opened
      */
     isOpen(modal_name: string): boolean {
-        return this.open.includes(modal_name);
+        const open_modal = this.open.find((m) => m.name === modal_name) as
+            | OpenModal
+            | undefined;
+        return !!open_modal;
     }
 
     /**
-     * Name already exist in manager
+     * Get parameters of opened modal, if modal is closed result will be 'null'
+     * @param modal_name name of modal
+     * @returns {Object|Null}
      */
-    private include(modal_name: string): boolean {
-        return this.modals.includes(modal_name);
+    getParams(modal_name: string): ModalParams | null {
+        const open_modal = this.open.find((m) => m.name === modal_name) as
+            | OpenModal
+            | undefined;
+        return open_modal?.params || null;
     }
 
     /**
