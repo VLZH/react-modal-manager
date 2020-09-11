@@ -1,9 +1,13 @@
-node_modules
-example
-tests
 .git
 .cache
 .github
+node_modules
+example
+tests
+src
+# configs
 .prettierrc.js
 .eslintrc.js
 .babelrc.json
+yarn.lock
+*.log
