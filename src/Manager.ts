@@ -55,7 +55,7 @@ export class Manager {
     }
 
     /**
-     * Get registred modal
+     * Get registered modal
      * @param modal_name {string} name of modal
      */
     getModalByName(modal_name: string): Modal | undefined {
@@ -136,9 +136,11 @@ export class Manager {
 
     /**
      * Register function for modal, that will call on change of this modal
+     * @returns {() => void} unsubscribe callback
      */
-    addSubscriber(modal_name: string, subscriber: () => unknown): void {
+    addSubscriber(modal_name: string, subscriber: () => unknown): () => void {
         this.subscribers[modal_name].push(subscriber);
+        return () => this.removeSubscriber(modal_name, subscriber);
     }
 
     /**

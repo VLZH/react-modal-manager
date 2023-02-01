@@ -1,7 +1,7 @@
 import { CallbackParams } from "./CallbackParams";
 
 export interface ModalParams {
-    [key: string]: any;
+    [key: string]: unknown;
 }
 
 export interface Modal {
